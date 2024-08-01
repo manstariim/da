@@ -4,7 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
+    background-color: #775151;
     margin: 0;
 }
 
@@ -26,7 +26,7 @@ button {
     border: none;
     border-radius: 5px;
     background-color: #007bff;
-    color: white;
+    color: rgb(255, 255, 255);
 }
 
 button:hover {
@@ -48,4 +48,21 @@ p {
 #upgradeMenu button {
     display: block;
     margin: 10px auto;
+}
+
+.critical {
+    position: absolute;
+    color: red;
+    font-size: 24px;
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
 }

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clickCountElement = document.getElementById('clickCount');
     const cpsElement = document.getElementById('cps');
     const criticalClicksElement = document.getElementById('criticalClicks');
+    const comboBonusElement = document.getElementById('comboBonus');
     const upgradeMenuButton = document.getElementById('upgradeMenuButton');
     const upgradeMenu = document.getElementById('upgradeMenu');
     const autoClickerButton = document.getElementById('autoClickerButton');
@@ -18,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let clickHistory = [];
     let superClickActive = false;
     let criticalClicks = parseInt(localStorage.getItem('criticalClicks')) || 0;
+    let comboBonus = parseInt(localStorage.getItem('comboBonus')) || 0;
+    let comboCount = 0;
 
     if (doubleClickActive) {
         clickValue = 2;
@@ -25,8 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     clickCountElement.textContent = clickCount;
     criticalClicksElement.textContent = criticalClicks;
+    comboBonusElement.textContent = comboBonus;
 
     hamster.addEventListener('click', () => {
+        hamster.classList.add('shake');
+        setTimeout(() => hamster.classList.remove('shake'), 500);
+
         const isCritical = Math.random() < 0.1;  // 10% вероятность критического клика
         const earnedClicks = isCritical ? clickValue * 10 : clickValue;
 
@@ -39,6 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
             criticalClicksElement.textContent = criticalClicks;
             localStorage.setItem('criticalClicks', criticalClicks);
             showCriticalEffect();
+        }
+
+        comboCount += 1;
+        if (comboCount % 10 === 0) {
+            comboBonus += 10;  // Бонус за каждые 10 последовательных кликов
+            comboBonusElement.textContent = comboBonus;
+            localStorage.setItem('comboBonus', comboBonus);
         }
 
         clickHistory.push(Date.now());
@@ -117,8 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
         effect.textContent = 'Критический клик!';
         effect.className = 'critical';
         document.body.appendChild(effect);
-        effect.style.left = `${hamster.offsetLeft + hamster.width / 2}px`;
-        effect.style.top = `${hamster.offsetTop}px`;
+        const hamsterRect = hamster.getBoundingClientRect();
+        effect.style.left = `${hamsterRect.left + hamsterRect.width / 2}px`;
+        effect.style.top = `${hamsterRect.top}px`;
         setTimeout(() => document.body.removeChild(effect), 1000);
     }
 });

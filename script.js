@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const clickButton = document.getElementById('clickButton');
+    const hamster = document.getElementById('hamster');
     const clickCountElement = document.getElementById('clickCount');
     const upgradeMenuButton = document.getElementById('upgradeMenuButton');
     const upgradeMenu = document.getElementById('upgradeMenu');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     clickCountElement.textContent = clickCount;
 
-    clickButton.addEventListener('click', () => {
+    hamster.addEventListener('click', () => {
         clickCount += clickValue;
         clickCountElement.textContent = clickCount;
         localStorage.setItem('clickCount', clickCount);

@@ -5,11 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const upgradeMenu = document.getElementById('upgradeMenu');
     const autoClickerButton = document.getElementById('autoClickerButton');
     const doubleClickButton = document.getElementById('doubleClickButton');
+    const cancelAutoClickerButton = document.getElementById('cancelAutoClickerButton');
 
     let clickCount = parseInt(localStorage.getItem('clickCount')) || 0;
     let clickValue = 1;
     let autoClickerActive = localStorage.getItem('autoClickerActive') === 'true';
     let doubleClickActive = localStorage.getItem('doubleClickActive') === 'true';
+    let autoClickerInterval;
 
     if (doubleClickActive) {
         clickValue = 2;
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('clickCount', clickCount);
             autoClickerActive = true;
             localStorage.setItem('autoClickerActive', 'true');
-            setInterval(() => {
+            autoClickerInterval = setInterval(() => {
                 clickCount += clickValue;
                 clickCountElement.textContent = clickCount;
                 localStorage.setItem('clickCount', clickCount);
@@ -53,8 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    cancelAutoClickerButton.addEventListener('click', () => {
+        if (autoClickerActive && clickCount >= 25) {
+            clickCount -= 25;
+            clickCountElement.textContent = clickCount;
+            localStorage.setItem('clickCount', clickCount);
+            clearInterval(autoClickerInterval);
+            autoClickerActive = false;
+            localStorage.setItem('autoClickerActive', 'false');
+            clickCount += 10;
+            clickCountElement.textContent = clickCount;
+            localStorage.setItem('clickCount', clickCount);
+        }
+    });
+
     if (autoClickerActive) {
-        setInterval(() => {
+        autoClickerInterval = setInterval(() => {
             clickCount += clickValue;
             clickCountElement.textContent = clickCount;
             localStorage.setItem('clickCount', clickCount);
